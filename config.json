@@ -1,0 +1,23 @@
+{
+  "columns": {
+    "name": "NAME",
+    "gender": "GENDER",
+    "shortclubname": "SHORTCLUB",
+    "clubname": "CLUBNAME",
+    "event": "EVENTNO",
+    "race": "STYLE",
+    "time": "TIME",
+    "points": "POINT"
+  },
+  "genders": {
+    "male": "H",
+    "female": "D"
+  },
+  "styles": {
+    "free": "Freistil",
+    "fly": "Delphin",
+    "breast": "Brust",
+    "back": "Rücken",
+    "medley": "Lagen"
+  }
+}
