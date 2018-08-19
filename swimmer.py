@@ -31,4 +31,4 @@ class SwimmerFactory(object):
         elif gender == self.female:
             return FemaleSwimmer(name, clubname, shortclubname, races)
         else:
-            raise "Unknown gender {}".format(gender)
+            raise Exception("Unknown gender {}".format(gender))

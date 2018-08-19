@@ -4,38 +4,55 @@ from swimmer import *
 from race import *
 
 
-def __main__():
+# def __main__():
 
-    configuration = config.load_config()
+print("Loading config.json")
+configuration = config.load_config()
 
-    swimmer_factory = SwimmerFactory(configuration.genders.male, configuration.genders.female)
-    race_factory = RaceFactory()
+name_column = configuration["columns"]["swimmers"]["name"]
+gender_column = configuration["columns"]["swimmers"]["gender"]
+club_column = configuration["columns"]["swimmers"]["clubname"]
+shortclub_column = configuration["columns"]["swimmers"]["shortclubname"]
 
-    swimmers = []
+eventnumber_column = configuration["columns"]["races"]["eventnumber"]
 
-    with open("sw.txt") as csvfile:
-        reader = csv.reader(csvfile, delimiter='\t')
+print("Configuration loaded!")
 
-        # read header line
-        header = reader.get_line
-        header.filter(configuration.columns.name)
+swimmer_factory = SwimmerFactory(configuration["genders"]["male"], configuration["genders"]["female"])
+race_factory = RaceFactory()
 
-        for row in reader:
-            # print(', '.join(row))
+swimmers = []
 
-            name = row[configuration.columns.name]
-            gender = row[configuration.columns.gender]
-            shortclubname = row[configuration.columns.shortclubname]
-            clubname = row[configuration.columns.clubname]
+file_name = "sw.txt"
+print("Reading input file {}".format(file_name))
+with open(file_name) as csvfile:
+    reader = csv.DictReader(csvfile, delimiter='\t')
+    print("File contains the following columns: {}".format(reader.fieldnames))
 
-            races = []
-            # for ??? in row:
-            #     race = row[configuration.columns.race]
-            #     time = row[configuration.columns.time]
-            #     points = row[configuration.columns.points]
-            #
-            #     races.append(race_factory.create(race, time, points))
+    number_of_races = len([n for n in reader.fieldnames if n.startswith(eventnumber_column)])
+    print("File contains results of {} races".format(number_of_races))
 
-            swimmers.append(swimmer_factory.create(gender, name, clubname, shortclubname, races))
+    for row in reader:
+        # print(', '.join(row))
 
-        print(swimmers)
+        name = row[name_column]
+        gender = row[gender_column]
+        shortclubname = row[shortclub_column]
+        clubname = row[club_column]
+
+        if name == name_column:
+            # we are reading the header line now --> skip it
+            continue
+
+        races = []
+        # for ??? in row:
+        #     race = row[configuration.columns.race]
+        #     time = row[configuration.columns.time]
+        #     points = row[configuration.columns.points]
+        #
+        #     races.append(race_factory.create(race, time, points))
+
+        print("Swimmer: {}; {}; {}; {}".format(name, gender, shortclubname, clubname))
+        swimmers.append(swimmer_factory.create(gender, name, clubname, shortclubname, races))
+
+    print(swimmers)

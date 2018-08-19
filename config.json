@@ -1,13 +1,18 @@
 {
   "columns": {
-    "name": "NAME",
-    "gender": "GENDER",
-    "shortclubname": "SHORTCLUB",
-    "clubname": "CLUBNAME",
-    "event": "EVENTNO",
-    "race": "STYLE",
-    "time": "TIME",
-    "points": "POINT"
+    "swimmers": {
+      "name": "NAME",
+      "gender": "GENDER",
+      "shortclubname": "SHORTCLUB",
+      "clubname": "CLUBNAME"
+    },
+    "races": {
+      "eventnumber": "EVENTNO",
+      "race": "STYLE",
+      "time": "TIME",
+      "place": "PLACE",
+      "points": "POINT"
+    }
   },
   "genders": {
     "male": "H",
