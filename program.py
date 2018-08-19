@@ -20,7 +20,7 @@ time_column = configuration["columns"]["races"]["time"]
 place_column = configuration["columns"]["races"]["place"]
 points_column = configuration["columns"]["races"]["points"]
 
-print("Configuration loaded!")
+print("Configuration loaded")
 
 swimmer_factory = SwimmerFactory(configuration["genders"]["male"], configuration["genders"]["female"])
 race_factory = RaceFactory()
@@ -70,12 +70,12 @@ swimmers_sorted_by_points = sorted(swimmers, key=lambda swimmer: swimmer.points,
 female_ranking = list(filter(lambda swimmer: isinstance(swimmer, FemaleSwimmer), swimmers_sorted_by_points))
 male_ranking = list(filter(lambda swimmer: isinstance(swimmer, MaleSwimmer), swimmers_sorted_by_points))
 
-print("--- Medal ranks female ---")
+print("\n--- Medal ranks female ---")
 for i in range(0, 3):
     swimmer = female_ranking[i]
     print("{}. {} ({}), {} points".format(i+1, swimmer.name, swimmer.shortclubname, swimmer.points))
 
-print("--- Medal ranks male ---")
+print("\n--- Medal ranks male ---")
 for i in range(0, 3):
     swimmer = male_ranking[i]
     print("{}. {} ({}), {} points".format(i+1, swimmer.name, swimmer.shortclubname, swimmer.points))
