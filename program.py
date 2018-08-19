@@ -15,6 +15,10 @@ club_column = configuration["columns"]["swimmers"]["clubname"]
 shortclub_column = configuration["columns"]["swimmers"]["shortclubname"]
 
 eventnumber_column = configuration["columns"]["races"]["eventnumber"]
+race_column = configuration["columns"]["races"]["race"]
+time_column = configuration["columns"]["races"]["time"]
+place_column = configuration["columns"]["races"]["place"]
+points_column = configuration["columns"]["races"]["points"]
 
 print("Configuration loaded!")
 
@@ -23,18 +27,17 @@ race_factory = RaceFactory()
 
 swimmers = []
 
-file_name = "sw.txt"
+file_name = "sw-2018.txt"
 print("Reading input file {}".format(file_name))
+
 with open(file_name) as csvfile:
     reader = csv.DictReader(csvfile, delimiter='\t')
-    print("File contains the following columns: {}".format(reader.fieldnames))
+    # print("File contains the following columns: {}".format(reader.fieldnames))
 
-    number_of_races = len([n for n in reader.fieldnames if n.startswith(eventnumber_column)])
-    print("File contains results of {} races".format(number_of_races))
+    max_number_of_races = len([n for n in reader.fieldnames if n.startswith(eventnumber_column)])
+    print("File contains results of {} races".format(max_number_of_races))
 
     for row in reader:
-        # print(', '.join(row))
-
         name = row[name_column]
         gender = row[gender_column]
         shortclubname = row[shortclub_column]
@@ -45,14 +48,34 @@ with open(file_name) as csvfile:
             continue
 
         races = []
-        # for ??? in row:
-        #     race = row[configuration.columns.race]
-        #     time = row[configuration.columns.time]
-        #     points = row[configuration.columns.points]
-        #
-        #     races.append(race_factory.create(race, time, points))
 
-        print("Swimmer: {}; {}; {}; {}".format(name, gender, shortclubname, clubname))
-        swimmers.append(swimmer_factory.create(gender, name, clubname, shortclubname, races))
+        for i in range(1,  max_number_of_races):
+            race = row["{}{}".format(race_column, i)]
+            time = row["{}{}".format(time_column, i)]
+            points = row["{}{}".format(points_column, i)]
 
-    print(swimmers)
+            if race == "":
+                # no more races for this swimmer
+                break
+        
+            races.append(race_factory.create(race, time, points))
+
+        swimmer = swimmer_factory.create(gender, name, clubname, shortclubname, races)
+        # print(swimmer)
+        swimmers.append(swimmer)
+
+print("{} swimmers processed".format(len(swimmers)))
+
+swimmers_sorted_by_points = sorted(swimmers, key=lambda swimmer: swimmer.points, reverse=True)
+female_ranking = list(filter(lambda swimmer: isinstance(swimmer, FemaleSwimmer), swimmers_sorted_by_points))
+male_ranking = list(filter(lambda swimmer: isinstance(swimmer, MaleSwimmer), swimmers_sorted_by_points))
+
+print("--- Medal ranks female ---")
+for i in range(0, 3):
+    swimmer = female_ranking[i]
+    print("{}. {} ({}), {} points".format(i+1, swimmer.name, swimmer.shortclubname, swimmer.points))
+
+print("--- Medal ranks male ---")
+for i in range(0, 3):
+    swimmer = male_ranking[i]
+    print("{}. {} ({}), {} points".format(i+1, swimmer.name, swimmer.shortclubname, swimmer.points))
