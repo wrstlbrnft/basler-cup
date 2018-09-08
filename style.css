@@ -1,0 +1,20 @@
+.ranking {
+    font-size: 1.2em;
+    font-weight: bold;
+}
+
+.rank {
+    padding-right: 1em;
+}
+
+.points{
+    padding-left: 2em;
+}
+
+.times {
+    padding-bottom: 1em;
+}
+
+.counting {
+    font-weight: bold;
+}

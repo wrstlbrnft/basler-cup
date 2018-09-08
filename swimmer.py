@@ -15,19 +15,30 @@ class Swimmer(object):
         return self.__str__()
 
     def _calculate_points(self) -> int:
-        best50 = 0
-        best100 = 0
-        best200 = 0
+        best50 = None
+        best100 = None
+        best200 = None
 
         for r in self.races:
-            if r.distance == 50 and r.points > best50:
-                best50 = r.points
-            elif r.distance == 100 and r.points > best100:
-                best100 = r.points
-            elif r.distance == 200 and r.points > best200:
-                best200 = r.points
+            if r.distance == 50 and (best50 is None or r.points > best50.points):
+                best50 = r
+            elif r.distance == 100 and (best100 is None or r.points > best100.points):
+                best100 = r
+            elif r.distance == 200 and (best200 is None or r.points > best200.points):
+                best200 = r
 
-        return best50 + best100 + best200
+        points50 = points100 = points200 = 0
+        if best50 is not None:
+            best50.counts_for_ranking = True
+            points50 = best50.points
+        if best100 is not None:
+            best100.counts_for_ranking = True
+            points100 = best100.points
+        if best200 is not None:
+            best200.counts_for_ranking = True
+            points200 = best200.points
+
+        return points50 + points100 + points200
 
 class MaleSwimmer(Swimmer):
 

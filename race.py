@@ -5,6 +5,7 @@ class Race(object):
         self.style = style
         self.time = time
         self.points = points
+        self.counts_for_ranking = False
 
 
 class RaceFactory(object):

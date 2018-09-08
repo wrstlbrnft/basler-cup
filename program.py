@@ -2,6 +2,8 @@ import csv
 import config
 from swimmer import *
 from race import *
+from jinja2 import Environment, FileSystemLoader, Template
+from datetime import date
 
 
 # def __main__():
@@ -66,7 +68,8 @@ with open(file_name) as csvfile:
 
 print("{} swimmers processed".format(len(swimmers)))
 
-swimmers_sorted_by_points = sorted(swimmers, key=lambda swimmer: swimmer.points, reverse=True)
+swimmers_with_points = list(filter(lambda swimmer: swimmer.points > 0, swimmers))
+swimmers_sorted_by_points = sorted(swimmers_with_points, key=lambda swimmer: swimmer.points, reverse=True)
 female_ranking = list(filter(lambda swimmer: isinstance(swimmer, FemaleSwimmer), swimmers_sorted_by_points))
 male_ranking = list(filter(lambda swimmer: isinstance(swimmer, MaleSwimmer), swimmers_sorted_by_points))
 
@@ -79,3 +82,15 @@ print("\n--- Medal ranks male ---")
 for i in range(0, 3):
     swimmer = male_ranking[i]
     print("{}. {} ({}), {} points".format(i+1, swimmer.name, swimmer.shortclubname, swimmer.points))
+
+
+current_year = date.today().year
+
+jinja_env = Environment(loader=FileSystemLoader("."))
+template = jinja_env.get_template("template.html")
+html = template.render(year=current_year, females=female_ranking, males=male_ranking)
+
+output_file = open("ranking.html", "w")
+output_file.write(html)
+output_file.flush
+output_file.close
