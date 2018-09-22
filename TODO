@@ -1,0 +1,5 @@
+TODO
+
+* fix pdf formatting (pass CSS?)
+* make executable (on Windows, without python installation)
+* provide input file name as parameter (or change to "sw.txt")
