@@ -1,12 +1,13 @@
 import csv
-import config
-from swimmer import *
-from race import *
-from jinja2 import Environment, FileSystemLoader, Template
-from datetime import date
-from xhtml2pdf import pisa
 import io
+from datetime import date
 
+from jinja2 import Environment, FileSystemLoader, Template
+from xhtml2pdf import pisa
+
+import config
+from race import RaceFactory
+from swimmer import SwimmerFactory, FemaleSwimmer, MaleSwimmer
 
 def _load_configuration():
     print("Loading config.json")
