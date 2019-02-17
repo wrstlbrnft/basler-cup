@@ -152,7 +152,7 @@ if __name__ == "__main__":
     config = _load_configuration()
     current_year = date.today().year
 
-    file_name = "sw-2015.txt"
+    file_name = "sw.txt"
     utf_file_name = "utf8.txt"
     _convert_input_file_to_utf8(file_name, utf_file_name)
 
