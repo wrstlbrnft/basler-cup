@@ -1,5 +1,8 @@
 TODO
 
-* fix pdf formatting (pass CSS?)
-* make executable (on Windows, without python installation)
-* provide input file name as parameter (or change to "sw.txt")
+* Fix PDF formatting
+** Non-ASCII character display
+** Colunm width
+* Make executable (on Windows, without python installation)
+* Provide input file name as parameter (or change to "sw.txt")
+* Provide event year as a parameter

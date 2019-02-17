@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>Punktewertung Basler Cup {{ year }}</title>
@@ -9,11 +10,11 @@
         <a href="#females">Damen</a><br>
         <a href="#males">Herren</a>
 
-        <h2>Damen<a name="females"></h2>
+        <h2>Damen<a name="females"></a></h2>
         <table>
         {% for swimmer in females %}
             <tr class="ranking">
-                <td class="rank">{{ loop.index }}.</b></td>
+                <td class="rank">{{ loop.index }}.</td>
                 <td>{{ swimmer.name }}, {{ swimmer.clubname }}</td>
                 <td class="points">{{ swimmer.points }} Punkte</td>
             </tr>
@@ -31,22 +32,22 @@
 
         <h2>Herren<a name="males"></a></h2>
         <table>
-                {% for swimmer in males %}
-                    <tr class="ranking">
-                        <td class="rank">{{ loop.index }}.</b></td>
-                        <td>{{ swimmer.name }}, {{ swimmer.clubname }}</td>
-                        <td class="points">{{ swimmer.points }} Punkte</td>
-                    </tr>
-                    <tr>
-                        <td class="times"></td>
-                        <td class="times">
-                        {% for race in swimmer.races %}
-                            <div {% if race.counts_for_ranking %}class="counting"{% endif %}>{{ race.distance }}m {{ race.style }}, {{ race.time }}, {{ race.points }}</div>
-                        {% endfor %}
-                        </td>
-                        <td class="times"></td>
-                    </tr>
+        {% for swimmer in males %}
+            <tr class="ranking">
+                <td class="rank">{{ loop.index }}.</td>
+                <td>{{ swimmer.name }}, {{ swimmer.clubname }}</td>
+                <td class="points">{{ swimmer.points }} Punkte</td>
+            </tr>
+            <tr>
+                <td class="times"></td>
+                <td class="times">
+                {% for race in swimmer.races %}
+                    <div {% if race.counts_for_ranking %}class="counting"{% endif %}>{{ race.distance }}m {{ race.style }}, {{ race.time }}, {{ race.points }}</div>
                 {% endfor %}
-                </table>
+                </td>
+                <td class="times"></td>
+            </tr>
+        {% endfor %}
+        </table>
     </body>
 </html>
