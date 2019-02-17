@@ -1,6 +1,7 @@
+import codecs
 import csv
-import io
 from datetime import date
+import io
 
 from jinja2 import Environment, FileSystemLoader, Template
 from xhtml2pdf import pisa
@@ -42,14 +43,21 @@ def _load_configuration():
         "female": female
     }
 
-def _process_swimmers(config):
+def _convert_input_file_to_utf8(input_file_name, utf_file_name):
+    print("Reading input file {}".format(file_name))
+    print("Converting input file to utf-8 and storing it in {}".format(utf_file_name))
+    original_file = codecs.open(input_file_name, encoding="cp1252")
+    utf_file = codecs.open(utf_file_name, "w", encoding="utf-8")
+    for line in original_file:
+        utf_file.write(line)
+    original_file.close()
+    utf_file.close()
+
+def _process_swimmers(config, file_name):
     swimmer_factory = SwimmerFactory(config["male"], config["female"])
     race_factory = RaceFactory()
 
     swimmers = []
-
-    file_name = "sw-2018.txt"
-    print("Reading input file {}".format(file_name))
 
     with open(file_name) as csvfile:
         reader = csv.DictReader(csvfile, delimiter='\t')
@@ -65,7 +73,7 @@ def _process_swimmers(config):
             clubname = row[config["club_column"]]
 
             if name == config["name_column"]:
-                # we are reading the header line now --> skip it
+                # We are reading the header line now --> skip it
                 continue
 
             races = []
@@ -76,12 +84,18 @@ def _process_swimmers(config):
                 points = row["{}{}".format(config["points_column"], i)]
 
                 if race == "":
-                    # no more races for this swimmer
+                    # No more races for this swimmer
                     break
             
                 races.append(race_factory.create(race, time, points))
 
-            swimmer = swimmer_factory.create(gender, name, clubname, shortclubname, races)
+            swimmer = swimmer_factory.create(
+                gender, 
+                name, 
+                clubname, 
+                shortclubname, 
+                races
+            )
             # print(swimmer)
             swimmers.append(swimmer)
 
@@ -125,7 +139,7 @@ def _render_and_write_html(rankings, current_year):
 
 def _write_pdf(html, current_year):
     pdf_output = io.BytesIO()
-    pisa.CreatePDF(html, dest=pdf_output)
+    pisa.CreatePDF(html, dest=pdf_output, encoding="cp1252")
 
     pdf_file_name = "ranking_{}.pdf".format(current_year)
     with open(pdf_file_name, "w+b") as pdf_file:
@@ -138,7 +152,11 @@ if __name__ == "__main__":
     config = _load_configuration()
     current_year = date.today().year
 
-    swimmers = _process_swimmers(config)
+    file_name = "sw-2015.txt"
+    utf_file_name = "utf8.txt"
+    _convert_input_file_to_utf8(file_name, utf_file_name)
+
+    swimmers = _process_swimmers(config, utf_file_name)
     rankings = _create_rankings(swimmers)
 
     _print_medal_ranks(rankings)
