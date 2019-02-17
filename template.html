@@ -3,29 +3,45 @@
     <head>
         <meta charset="utf-8"/>
         <title>Punktewertung Basler Cup {{ year }}</title>
+        <style type="text/css">
+            table {
+                width: 100%;
+            }
+
+            th {
+                text-align: left;
+                font-size: 1.5em;
+                font-weight: bold;
+                border-bottom: 1px solid black;
+            }
+
+            .col1 {
+                width: 10%;
+            }
+
+            .col2 {
+                width: 70%;
+            }
+
+            .col3 {
+                width: 20%;
+            }
+    
+            .ranking {
+                font-size: 1.2em;
+                font-weight: bold;
+            }
+    
+            .times {
+                padding-bottom: 1em;
+                border-bottom: 1px solid black;
+            }
+    
+            .counting {
+                font-weight: bold;
+            }
+        </style>
     </head>
-    <style>
-        .ranking {
-            font-size: 1.2em;
-            font-weight: bold;
-        }
-
-        .rank {
-            padding-right: 1em;
-        }
-
-        .points {
-            padding-left: 2em;
-        }
-
-        .times {
-            padding-bottom: 1em;
-        }
-
-        .counting {
-            font-weight: bold;
-        }
-    </style>
     <body>
 
         <h1>Punktewertung Basler Cup {{ year}}</h1>
@@ -34,40 +50,54 @@
 
         <h2>Damen<a name="females"></a></h2>
         <table>
+            <thead>
+                <tr>
+                    <th class="col1">Rang</th>
+                    <th class="col2">Schwimmer und Resultate</th>
+                    <th class="col3">Total Punkte</th>
+                </tr>
+            </thead>
         {% for swimmer in females %}
             <tr class="ranking">
-                <td class="rank">{{ loop.index }}.</td>
-                <td>{{ swimmer.name }}, {{ swimmer.clubname }}</td>
-                <td class="points">{{ swimmer.points }} Punkte</td>
+                <td class="col1">{{ loop.index }}.</td>
+                <td class="col2">{{ swimmer.name }}, {{ swimmer.clubname }}</td>
+                <td class="col3">{{ swimmer.points }} Punkte</td>
             </tr>
             <tr>
-                <td class="times"></td>
-                <td class="times">
+                <td class="col1 times"></td>
+                <td class="col2 times">
                 {% for race in swimmer.races %}
                     <div {% if race.counts_for_ranking %}class="counting"{% endif %}>{{ race.distance }}m {{ race.style }}, {{ race.time }}, {{ race.points }}</div>
                 {% endfor %}
                 </td>
-                <td class="times"></td>
+                <td class="col3 times"></td>
             </tr>
         {% endfor %}
         </table>
 
         <h2>Herren<a name="males"></a></h2>
         <table>
+            <thead>
+                <tr>
+                    <th class="col1">Rang</th>
+                    <th class="col2">Schwimmer und Resultate</th>
+                    <th class="col3">Total Punkte</th>
+                </tr>
+            </thead>
         {% for swimmer in males %}
-            <tr class="ranking">
-                <td class="rank">{{ loop.index }}.</td>
-                <td>{{ swimmer.name }}, {{ swimmer.clubname }}</td>
-                <td class="points">{{ swimmer.points }} Punkte</td>
+        <tr class="ranking">
+                <td class="col1">{{ loop.index }}.</td>
+                <td class="col2">{{ swimmer.name }}, {{ swimmer.clubname }}</td>
+                <td class="col3">{{ swimmer.points }} Punkte</td>
             </tr>
             <tr>
-                <td class="times"></td>
-                <td class="times">
+                <td class="col1 times"></td>
+                <td class="col2 times">
                 {% for race in swimmer.races %}
                     <div {% if race.counts_for_ranking %}class="counting"{% endif %}>{{ race.distance }}m {{ race.style }}, {{ race.time }}, {{ race.points }}</div>
                 {% endfor %}
                 </td>
-                <td class="times"></td>
+                <td class="col3 times"></td>
             </tr>
         {% endfor %}
         </table>
